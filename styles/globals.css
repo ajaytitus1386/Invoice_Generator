@@ -1,3 +1,24 @@
+@import url("https://fonts.googleapis.com/css2?family=Prompt:wght@300;400;500;700;800&display=swap");
+
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@layer components {
+  .button-solid {
+    @apply bg-blueMarguerite rounded-2xl p-3 px-6 hover:bg-hoverPurple active:bg-clickPurple;
+  }
+
+  .button-expand {
+    @apply;
+  }
+
+  .border-class {
+    @apply border-2 border-solid w-1/2 border-lightGray py-2 px-4 rounded-2xl
+        focus-within:border-midBlack;
+  }
+
+  .heading-1 {
+    @apply text-midBlack font-bold text-xl;
+  }
+}
