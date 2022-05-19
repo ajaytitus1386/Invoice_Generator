@@ -14,7 +14,7 @@ module.exports = {
         hoverPurple: "#4F4099",
         clickPurple: "#3B3077",
         lightPurple: "#F2EFFF",
-        lavender: "#F2EFFF",
+        lavender: "#F9F8FF",
         midPurple: "#ACA5D6",
         lightGray: "#9E9E9E",
         jetBlack: "#1A1A1A",
