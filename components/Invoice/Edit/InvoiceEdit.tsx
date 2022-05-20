@@ -1,5 +1,4 @@
 import { TextField } from "@mui/material";
-import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import { Invoice } from "../../../models/invoice";
 import InvoiceHeader from "../InvoiceHeader";
@@ -67,15 +66,17 @@ function InvoiceEdit({
         <ProductTable invoice={invoice} setInvoice={setInvoice} />
       </div>
       <div className="flex justify-end px-safe">
-        <div className="flex flex-col w-2/5">
-          <hr></hr>
-          <div className="flex flex-row justify-between py-5">
-            <strong className="font-medium">Total</strong>
-            <strong className="font-medium">
-              {"$" + totalAmount.toFixed(2)}
-            </strong>
+        {totalAmount != 0 && (
+          <div className="flex flex-col w-2/5">
+            <hr></hr>
+            <div className="flex flex-row justify-between py-5">
+              <strong className="font-medium">Total</strong>
+              <strong className="font-medium">
+                {"$" + totalAmount.toFixed(2)}
+              </strong>
+            </div>
           </div>
-        </div>
+        )}
       </div>
     </div>
   );
