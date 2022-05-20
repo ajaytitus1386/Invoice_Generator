@@ -58,7 +58,7 @@ function ProductTableRow({
   }
 
   useEffect(() => {
-    if (quantity > 0) updateQuantity();
+    if (quantity >= 0 && !isLatestProduct) updateQuantity();
   }, [quantity]);
 
   return (
@@ -111,7 +111,6 @@ function ProductTableRow({
             value={quantity}
             onChange={(event) => {
               if (Number(event.target.value) >= 0) {
-                console.log("This is:", Number(event.target.value));
                 setQuantity(Number(event.target.value));
               }
             }}
