@@ -2,14 +2,12 @@ import { FormControl, MenuItem, Select, TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Invoice } from "../../../models/invoice";
 import { Product } from "../../../models/product";
-import getProducts from "../../../services/product/getProducts";
 
 interface ProductTableRowProps {
   index: number;
   productsMenuItems: Product[];
   setProductsMenuItems: React.Dispatch<React.SetStateAction<Product[]>>;
-  //TODO: product required?
-  product: Product;
+  initialProduct: Product;
   invoice: Invoice;
   setInvoice: React.Dispatch<React.SetStateAction<Invoice>>;
 }
@@ -18,10 +16,13 @@ function ProductTableRow({
   index,
   productsMenuItems,
   setProductsMenuItems,
+  initialProduct,
   invoice,
   setInvoice,
 }: ProductTableRowProps) {
-  const [isLatestProduct, setIsLatestProduct] = useState(true);
+  const [isLatestProduct, setIsLatestProduct] = useState(
+    initialProduct.description.toString() == ""
+  );
   const [productName, setProductName] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [rate, setRate] = useState(0);
@@ -41,12 +42,14 @@ function ProductTableRow({
   useEffect(() => {
     // If product is changed and is not already in products list
     if (productName != "" && isLatestProduct) {
+      console.log("Firing Product Name");
       setIsLatestProduct(false);
       setInvoice({ ...invoice, products: [...invoice.products, product] });
     }
   }, [productName]);
 
   function updateQuantity() {
+    console.log("Firing Update Qty");
     const splicedProducts = invoice.products.filter(
       (element) => element.description != product.description
     );
@@ -58,7 +61,8 @@ function ProductTableRow({
   }
 
   useEffect(() => {
-    if (quantity >= 0 && !isLatestProduct) updateQuantity();
+    if (quantity >= 0 && !isLatestProduct && productName != "")
+      updateQuantity();
   }, [quantity]);
 
   return (
@@ -75,7 +79,7 @@ function ProductTableRow({
               setProductName(selectedValue);
               const index = productsMenuItems
                 .map((product) => product.description.toString())
-                .indexOf(selectedValue);
+                .indexOf(selectedValue.toString());
 
               const productRate = productsMenuItems.at(index)?.rate ?? 0;
               setRate(productRate);
