@@ -23,7 +23,7 @@ function InvoicePreview({ invoice }: InvoicePreviewProps) {
     year: "numeric",
   }).format(invoice.date);
   return (
-    <div className="shadow-lg">
+    <div className="h-screen shadow-lg">
       <InvoiceHeader />
       <div className="flex flex-row items-center justify-between py-5 px-safe">
         <div className="flex flex-col items-start justify-start w-3/5 space-y-0">
