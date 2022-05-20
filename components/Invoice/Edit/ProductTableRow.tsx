@@ -42,14 +42,12 @@ function ProductTableRow({
   useEffect(() => {
     // If product is changed and is not already in products list
     if (productName != "" && isLatestProduct) {
-      console.log("Firing Product Name");
       setIsLatestProduct(false);
       setInvoice({ ...invoice, products: [...invoice.products, product] });
     }
   }, [productName]);
 
   function updateQuantity() {
-    console.log("Firing Update Qty");
     const splicedProducts = invoice.products.filter(
       (element) => element.description != product.description
     );

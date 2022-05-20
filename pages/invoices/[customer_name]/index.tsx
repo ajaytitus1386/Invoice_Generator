@@ -89,7 +89,6 @@ function InvoiceGeneratorPage() {
           </button>
           <button
             onClick={() => {
-              console.log(invoice);
               saveInvoiceToLocalStorage(invoice);
             }}
             className="button-normal"
