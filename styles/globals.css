@@ -10,7 +10,7 @@
   }
 
   .button-normal {
-    @apply px-4 py-2 rounded-lg bg-lightPurple text-blueMarguerite;
+    @apply px-4 py-2 rounded-lg bg-lightPurple text-blueMarguerite active:bg-midPurple;
   }
 
   .button-expand {
