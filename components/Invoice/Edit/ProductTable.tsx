@@ -7,18 +7,16 @@ import ProductTableRow from "./ProductTableRow";
 interface ProductTableProps {
   invoice: Invoice;
   setInvoice: React.Dispatch<React.SetStateAction<Invoice>>;
+  productsMenuItems: Product[];
+  setProductsMenuItems: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 
-function ProductTable({ invoice, setInvoice }: ProductTableProps) {
-  const [productsMenuItems, setProductsMenuItems] = useState<Product[]>([]);
-  async function fetchProductsFromApi() {
-    const data = await getProducts();
-    setProductsMenuItems(data);
-  }
-  useEffect(() => {
-    fetchProductsFromApi();
-  }, []);
-
+function ProductTable({
+  invoice,
+  setInvoice,
+  productsMenuItems,
+  setProductsMenuItems,
+}: ProductTableProps) {
   const latestProduct: Product = {
     id: invoice.products.length,
     description: "",
@@ -39,7 +37,7 @@ function ProductTable({ invoice, setInvoice }: ProductTableProps) {
 
         <tbody className="">
           <ProductTableRow
-            product={latestProduct}
+            initialProduct={latestProduct}
             productsMenuItems={productsMenuItems}
             setProductsMenuItems={setProductsMenuItems}
             index={invoice.products.length}
@@ -54,7 +52,7 @@ function ProductTable({ invoice, setInvoice }: ProductTableProps) {
                   index={invoice.products.length}
                   productsMenuItems={productsMenuItems}
                   setProductsMenuItems={setProductsMenuItems}
-                  product={product}
+                  initialProduct={product}
                   invoice={invoice}
                   setInvoice={setInvoice}
                 />

@@ -1,6 +1,7 @@
 import { TextField } from "@mui/material";
 import React, { useEffect, useState } from "react";
 import { Invoice } from "../../../models/invoice";
+import { Product } from "../../../models/product";
 import InvoiceHeader from "../InvoiceHeader";
 import ProductTable from "./ProductTable";
 
@@ -9,6 +10,8 @@ interface InvoiceEditProps {
   setTransactionName: Function;
   invoice: Invoice;
   setInvoice: React.Dispatch<React.SetStateAction<Invoice>>;
+  productsMenuItems: Product[];
+  setProductsMenuItems: React.Dispatch<React.SetStateAction<Product[]>>;
 }
 
 function InvoiceEdit({
@@ -16,6 +19,8 @@ function InvoiceEdit({
   setTransactionName,
   invoice,
   setInvoice,
+  productsMenuItems,
+  setProductsMenuItems,
 }: InvoiceEditProps) {
   const [totalAmount, setTotalAmount] = useState(0.0);
 
@@ -63,7 +68,12 @@ function InvoiceEdit({
       </div>
 
       <div className="px-10 pb-5">
-        <ProductTable invoice={invoice} setInvoice={setInvoice} />
+        <ProductTable
+          productsMenuItems={productsMenuItems}
+          setProductsMenuItems={setProductsMenuItems}
+          invoice={invoice}
+          setInvoice={setInvoice}
+        />
       </div>
       <div className="flex justify-end px-safe">
         {totalAmount != 0 && (
