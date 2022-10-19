@@ -33,7 +33,7 @@ function LandingHeader() {
           event.preventDefault();
           goToInvoiceGenerator();
         }}
-        className="flex flex-col sm:flex-row items-center sm:w-3/5 h-auto sm:space-x-4 space-y-2"
+        className="flex flex-col sm:flex-row items-center sm:w-3/5 h-auto sm:space-x-4 space-y-2 sm:space-y-0"
       >
         <div className="sm:w-1/2 border-class">
           <TextField
