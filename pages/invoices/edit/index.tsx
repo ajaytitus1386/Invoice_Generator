@@ -26,9 +26,11 @@ function InvoiceGeneratorPage() {
     transaction_name: transactionName,
     products: [],
   };
+
   const [invoice, setInvoice] = useState(initialInvoice);
 
   const [productsMenuItems, setProductsMenuItems] = useState<Product[]>([]);
+
   async function fetchProductsFromApi() {
     const data = await getProducts();
     setProductsMenuItems(data);
@@ -59,9 +61,8 @@ function InvoiceGeneratorPage() {
       <div className="flex flex-row items-center justify-between pt-4 px-safe bg-gray-50">
         <div className="flex flex-row items-center space-x-4">
           <strong className="heading-1">{id}</strong>
-          <i className="material-icons-outlined">edit</i>
         </div>
-        <div className="flex flex-row items-center space-x-4">
+        <div className="grid grid-cols-2 relative">
           <ModeControlButton
             icon={"visibility"}
             label={"Preview"}
@@ -75,6 +76,11 @@ function InvoiceGeneratorPage() {
             setMode={setOnPreviewMode}
             isActive={!onPreviewMode}
           />
+          <div
+            className={`transition-all duration-100 after:content-[''] after:rounded-lg after:absolute after:bottom-0 after:left-0 after:h-1 after:w-full after:bg-activePurple ${
+              onPreviewMode ? "translate-x-0" : "translate-x-full"
+            }`}
+          ></div>
         </div>
         <div className="flex flex-row items-center mb-2 space-x-4">
           <button
@@ -92,10 +98,11 @@ function InvoiceGeneratorPage() {
           <button
             onClick={() => {
               saveInvoiceToLocalStorage(invoice);
+              router.push("/");
             }}
             className="button-normal"
           >
-            {"Save Invoice"}
+            {"Finish Invoice"}
           </button>
         </div>
       </div>

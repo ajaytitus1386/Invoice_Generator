@@ -19,20 +19,12 @@ function ModeControlButton({
   }
 
   return (
-    <div>
-      <div
-        onClick={changeControlMode}
-        className={`flex flex-row items-center p-1 font-medium ${textColor} ${textHover} `}
-      >
-        <i className="material-icons-outlined mr-1">{icon}</i>
-        {label}
-      </div>
-
-      <div
-        className={`h-1 w-full bg-activePurple rounded-lg ${
-          isActive ? "" : "invisible"
-        }`}
-      ></div>
+    <div
+      onClick={changeControlMode}
+      className={`flex flex-row cursor-pointer justify-center items-center p-1 font-medium ${textColor} ${textHover} `}
+    >
+      <i className="material-icons-outlined mr-1">{icon}</i>
+      {label}
     </div>
   );
 }
