@@ -40,6 +40,19 @@ function ProductTableRow({
     [productsMenuItems]
   );
 
+  function updateInvoiceProducts(newProduct: Product) {
+    // Very shorthand way of:
+    // Create a new invoice copy using all the old values
+    // except products field is made from an array of products
+    //  where the element with same index as current one uses the new product info OR stays the same
+    setInvoice((prevInv) => ({
+      ...prevInv,
+      products: prevInv.products.map((prod, idx) =>
+        idx === index ? newProduct : prod
+      ),
+    }));
+  }
+
   const updateProductName = (
     newProductName: string,
     newProductRate: number
@@ -51,16 +64,7 @@ function ProductTableRow({
       rate: newProductRate,
     };
 
-    // Very shorthand way of:
-    // Create a new invoice copy using all the old values
-    // except products field is made from an array of products
-    //  where the element with same index as current one uses the new product info OR stays the same
-    setInvoice((prevInv) => ({
-      ...prevInv,
-      products: prevInv.products.map((prod, idx) =>
-        idx === index ? newProduct : prod
-      ),
-    }));
+    updateInvoiceProducts(newProduct);
   };
 
   const updateQuantity = (newQuantity: number) => {
@@ -71,11 +75,13 @@ function ProductTableRow({
       rate: rate,
     };
 
+    updateInvoiceProducts(newProduct);
+  };
+
+  const removeProduct = () => {
     setInvoice((prevInv) => ({
       ...prevInv,
-      products: prevInv.products.map((prod, idx) =>
-        idx === index ? newProduct : prod
-      ),
+      products: prevInv.products.filter((_prod, idx) => idx != index),
     }));
   };
 
@@ -85,6 +91,13 @@ function ProductTableRow({
 
   return (
     <tr>
+      <td className="text-center">
+        <button name="removeProduct" onClick={() => removeProduct()}>
+          <i className="material-icons-outlined text-red-400">
+            {"remove_circle"}
+          </i>
+        </button>
+      </td>
       <td>
         <FormControl variant="standard" className="border-class" fullWidth>
           <Select

@@ -47,7 +47,8 @@ function ProductTable({
       <table className="w-full table-fixed">
         <thead className="w-full text-blueMarguerite">
           <tr className="">
-            <th className="w-3/5 px-1 text-left">Description</th>
+            <th className="px-1 text-center">Action</th>
+            <th className="w-2/5 px-1 text-left">Description</th>
             <th className="px-1 text-center">Rate</th>
             <th className="px-1 text-center">Qty</th>
             <th className="px-1 text-center">Line Total</th>
