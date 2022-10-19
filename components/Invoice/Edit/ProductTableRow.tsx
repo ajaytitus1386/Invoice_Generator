@@ -1,5 +1,5 @@
 import { FormControl, MenuItem, Select, TextField } from "@mui/material";
-import React, { useEffect, useState } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Invoice } from "../../../models/invoice";
 import { Product } from "../../../models/product";
 
@@ -20,51 +20,84 @@ function ProductTableRow({
   invoice,
   setInvoice,
 }: ProductTableRowProps) {
-  const [isLatestProduct, setIsLatestProduct] = useState(
-    initialProduct.description.toString() == ""
-  );
   const [productName, setProductName] = useState("");
   const [quantity, setQuantity] = useState(0);
   const [rate, setRate] = useState(0);
   const [lineTotal, setLineTotal] = useState(0);
 
-  const product: Product = {
-    id: index,
-    description: productName,
-    quantity: quantity,
-    rate: rate,
+  useEffect(() => {
+    setProductName(initialProduct.description.toString());
+    setQuantity(initialProduct.quantity);
+    setRate(initialProduct.rate);
+  }, [
+    initialProduct.description,
+    initialProduct.quantity,
+    initialProduct.rate,
+  ]);
+
+  const productNames = useMemo(
+    () => productsMenuItems.map((product) => product.description.toString()),
+    [productsMenuItems]
+  );
+
+  function updateInvoiceProducts(newProduct: Product) {
+    // Very shorthand way of:
+    // Create a new invoice copy using all the old values
+    // except products field is made from an array of products
+    //  where the element with same index as current one uses the new product info OR stays the same
+    setInvoice((prevInv) => ({
+      ...prevInv,
+      products: prevInv.products.map((prod, idx) =>
+        idx === index ? newProduct : prod
+      ),
+    }));
+  }
+
+  const updateProductName = (
+    newProductName: string,
+    newProductRate: number
+  ) => {
+    const newProduct: Product = {
+      id: index,
+      description: newProductName,
+      quantity: 0,
+      rate: newProductRate,
+    };
+
+    updateInvoiceProducts(newProduct);
+  };
+
+  const updateQuantity = (newQuantity: number) => {
+    const newProduct: Product = {
+      id: index,
+      description: productName,
+      quantity: newQuantity,
+      rate: rate,
+    };
+
+    updateInvoiceProducts(newProduct);
+  };
+
+  const removeProduct = () => {
+    setInvoice((prevInv) => ({
+      ...prevInv,
+      products: prevInv.products.filter((_prod, idx) => idx != index),
+    }));
   };
 
   useEffect(() => {
     setLineTotal(rate * quantity);
-  }, [rate, quantity]);
-
-  useEffect(() => {
-    // If product is changed and is not already in products list
-    if (productName != "" && isLatestProduct) {
-      setIsLatestProduct(false);
-      setInvoice({ ...invoice, products: [...invoice.products, product] });
-    }
-  }, [productName]);
-
-  function updateQuantity() {
-    const splicedProducts = invoice.products.filter(
-      (element) => element.description != product.description
-    );
-
-    setInvoice({
-      ...invoice,
-      products: [...splicedProducts, product],
-    });
-  }
-
-  useEffect(() => {
-    if (quantity >= 0 && !isLatestProduct && productName != "")
-      updateQuantity();
-  }, [quantity]);
+  }, [quantity, rate]);
 
   return (
-    <tr className="">
+    <tr>
+      <td className="text-center">
+        <button name="removeProduct" onClick={() => removeProduct()}>
+          <i className="material-icons-outlined text-red-400">
+            {"remove_circle"}
+          </i>
+        </button>
+      </td>
       <td>
         <FormControl variant="standard" className="border-class" fullWidth>
           <Select
@@ -75,12 +108,12 @@ function ProductTableRow({
             onChange={(event) => {
               const selectedValue = event.target.value;
               setProductName(selectedValue);
-              const index = productsMenuItems
-                .map((product) => product.description.toString())
-                .indexOf(selectedValue.toString());
+              const index = productNames.indexOf(selectedValue.toString());
 
               const productRate = productsMenuItems.at(index)?.rate ?? 0;
               setRate(productRate);
+
+              updateProductName(selectedValue, productRate);
             }}
             disableUnderline
             displayEmpty
@@ -111,9 +144,12 @@ function ProductTableRow({
             type={"number"}
             variant={"standard"}
             value={quantity}
+            disabled={productName == ""}
             onChange={(event) => {
-              if (Number(event.target.value) >= 0) {
-                setQuantity(Number(event.target.value));
+              const newQuantity = Number(event.target.value);
+              if (newQuantity >= 0) {
+                setQuantity(newQuantity);
+                updateQuantity(newQuantity);
               }
             }}
             InputProps={{ disableUnderline: true }}
