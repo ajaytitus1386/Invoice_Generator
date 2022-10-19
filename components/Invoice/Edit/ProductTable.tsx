@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { Invoice } from "../../../models/invoice";
 import { Product } from "../../../models/product";
 import ProductTableRow from "./ProductTableRow";
@@ -16,6 +16,8 @@ function ProductTable({
   productsMenuItems,
   setProductsMenuItems,
 }: ProductTableProps) {
+  const [maxEmpty, setMaxEmpty] = useState(false);
+
   const latestProduct: Product = {
     id: 0,
     description: "",
@@ -27,8 +29,13 @@ function ProductTable({
     if (
       invoice.products.length != 0 &&
       invoice.products[invoice.products.length - 1].description == ""
-    )
+    ) {
+      setMaxEmpty(true);
+      setTimeout(() => {
+        setMaxEmpty(false);
+      }, 860);
       return;
+    }
     setInvoice((invoice) => ({
       ...invoice,
       products: [...invoice.products, latestProduct],
@@ -49,11 +56,17 @@ function ProductTable({
 
         <tbody className="">
           <tr>
-            <button className="" onClick={() => addEmptyProduct()}>
-              <i className="material-icons-outlined mr-1 text-blueMarguerite">
-                {"add"}
-              </i>
-            </button>
+            <td className="flex justify-center items-center">
+              <button onClick={() => addEmptyProduct()}>
+                <i
+                  className={`material-icons-outlined text-blueMarguerite ${
+                    maxEmpty && "animate-error-shake text-red-600"
+                  }`}
+                >
+                  {"add"}
+                </i>
+              </button>
+            </td>
           </tr>
 
           {invoice.products &&
