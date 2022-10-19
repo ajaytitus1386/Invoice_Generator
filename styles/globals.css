@@ -24,4 +24,8 @@
   .heading-1 {
     @apply text-xl font-bold text-midBlack;
   }
+
+  .button-error {
+    @apply animate-error-shake bg-red-600 hover:bg-red-500;
+  }
 }
