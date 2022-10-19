@@ -106,7 +106,6 @@ function InvoiceGeneratorPage() {
           </button>
         </div>
       </div>
-      <pre>{JSON.stringify(invoice)}</pre>
       <div className="flex flex-col items-center">
         <div className="w-1/2 py-8 ">
           {!onPreviewMode && (
