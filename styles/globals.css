@@ -10,7 +10,7 @@
   }
 
   .button-normal {
-    @apply px-4 py-2 rounded-lg bg-lightPurple text-blueMarguerite active:bg-midPurple;
+    @apply px-4 py-2 rounded-lg bg-lightPurple text-blueMarguerite hover:border-activePurple border-2 border-transparent active:bg-midPurple;
   }
 
   .button-expand {
@@ -22,7 +22,7 @@
   }
 
   .heading-1 {
-    @apply text-xl font-bold text-midBlack;
+    @apply text-xl tracking-wide font-bold text-midBlack;
   }
 
   .button-error {
