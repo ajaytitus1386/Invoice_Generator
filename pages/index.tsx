@@ -11,7 +11,12 @@ const Home: NextPage = () => {
         <title>Invoice Generator</title>
       </Head>
       <div className="absolute right-32 top-12">
-        <Image src="/assets/invoice_image.png" width={420} height={460} />
+        <Image
+          src="/assets/invoice_image.png"
+          width={420}
+          height={460}
+          alt="Cover"
+        />
       </div>
       <LandingHeader />
       <div className="mb-12"></div>

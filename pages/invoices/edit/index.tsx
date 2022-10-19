@@ -58,7 +58,7 @@ function InvoiceGeneratorPage() {
       <Head>
         <title>Invoice Generator</title>
       </Head>
-      <div className="flex flex-row items-center justify-between pt-4 px-safe bg-gray-50">
+      <div className="flex flex-row items-center justify-between pt-4 px-safe bg-gray-50 border-b-2 border-gray-200">
         <div className="flex flex-row items-center space-x-4">
           <strong className="heading-1">{id}</strong>
         </div>
@@ -106,7 +106,7 @@ function InvoiceGeneratorPage() {
           </button>
         </div>
       </div>
-      <div className="h-0.5 w-full bg-gray-200"></div>
+      <pre>{JSON.stringify(invoice)}</pre>
       <div className="flex flex-col items-center">
         <div className="w-1/2 py-8 ">
           {!onPreviewMode && (
