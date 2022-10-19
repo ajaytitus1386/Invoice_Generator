@@ -4,6 +4,7 @@ import React, { useState } from "react";
 
 function LandingHeader() {
   const [customerName, setCustomerName] = useState("");
+  const [hasError, setHasError] = useState(false);
   const router = useRouter();
 
   function updateNameValue(
@@ -12,12 +13,14 @@ function LandingHeader() {
     setCustomerName(event.target.value);
   }
 
-  function submitName() {
-    console.log(customerName);
-  }
-
   function goToInvoiceGenerator() {
-    if (customerName != "") router.push(`/invoices/${customerName}`);
+    if (customerName.trim() != "") router.push(`/invoices/${customerName}`);
+    else {
+      setHasError(true);
+      setTimeout(() => {
+        setHasError(false);
+      }, 860);
+    }
   }
 
   return (
@@ -30,13 +33,12 @@ function LandingHeader() {
           event.preventDefault();
           goToInvoiceGenerator();
         }}
-        className="flex flex-row items-center w-3/5 h-auto space-x-4"
+        className="flex flex-col sm:flex-row items-center sm:w-3/5 h-auto sm:space-x-4 space-y-2"
       >
-        <div className="w-1/2 border-class">
+        <div className="sm:w-1/2 border-class">
           <TextField
             id="name"
-            placeholder="Enter Name"
-            required
+            placeholder="Enter Customer Name"
             value={customerName}
             onChange={(event) => {
               updateNameValue(event);
@@ -45,7 +47,10 @@ function LandingHeader() {
             InputProps={{ disableUnderline: true }}
           />
         </div>
-        <button type="submit" className="button-solid">
+        <button
+          type="submit"
+          className={`button-solid ${hasError ? "button-error" : ""}`}
+        >
           <strong className="text-xl font-medium tracking-wide text-white">
             Generate Invoice
           </strong>
