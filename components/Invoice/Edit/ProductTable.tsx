@@ -1,7 +1,6 @@
-import React, { useEffect, useState } from "react";
+import React from "react";
 import { Invoice } from "../../../models/invoice";
 import { Product } from "../../../models/product";
-import getProducts from "../../../services/product/getProducts";
 import ProductTableRow from "./ProductTableRow";
 
 interface ProductTableProps {
@@ -18,11 +17,24 @@ function ProductTable({
   setProductsMenuItems,
 }: ProductTableProps) {
   const latestProduct: Product = {
-    id: invoice.products.length,
+    id: 0,
     description: "",
     quantity: 0,
     rate: 0,
   };
+
+  const addEmptyProduct = () => {
+    if (
+      invoice.products.length != 0 &&
+      invoice.products[invoice.products.length - 1].description == ""
+    )
+      return;
+    setInvoice((invoice) => ({
+      ...invoice,
+      products: [...invoice.products, latestProduct],
+    }));
+  };
+
   return (
     <div className="p-4 border-2 border-solid border-midPurple rounded-xl">
       <table className="w-full table-fixed">
@@ -36,20 +48,20 @@ function ProductTable({
         </thead>
 
         <tbody className="">
-          <ProductTableRow
-            initialProduct={latestProduct}
-            productsMenuItems={productsMenuItems}
-            setProductsMenuItems={setProductsMenuItems}
-            index={invoice.products.length}
-            invoice={invoice}
-            setInvoice={setInvoice}
-          />
+          <tr>
+            <button className="" onClick={() => addEmptyProduct()}>
+              <i className="material-icons-outlined mr-1 text-blueMarguerite">
+                {"add"}
+              </i>
+            </button>
+          </tr>
+
           {invoice.products &&
             invoice.products.map((product, index) => {
               return (
                 <ProductTableRow
-                  key={index}
-                  index={invoice.products.length}
+                  key={product.id}
+                  index={index}
                   productsMenuItems={productsMenuItems}
                   setProductsMenuItems={setProductsMenuItems}
                   initialProduct={product}
