@@ -1,3 +1,4 @@
+import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -15,11 +16,12 @@ function InvoiceGeneratorPage() {
   const [transactionName, setTransactionName] = useState("");
 
   const router = useRouter();
-  const { asPath } = router;
-  const id = asPath.split("/").pop() ?? "";
+
+  const { id } = router.query;
+  if (!id && typeof window !== "undefined") router.push("/");
 
   const initialInvoice: Invoice = {
-    id: id,
+    id: id as String,
     date: Date.now(),
     transaction_name: transactionName,
     products: [],
@@ -79,7 +81,7 @@ function InvoiceGeneratorPage() {
             onClick={() => {
               setInvoice({
                 ...invoice,
-                id: id,
+                id: id as String,
                 transaction_name: transactionName,
               });
             }}

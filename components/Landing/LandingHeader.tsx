@@ -14,7 +14,11 @@ function LandingHeader() {
   }
 
   function goToInvoiceGenerator() {
-    if (customerName.trim() != "") router.push(`/invoices/${customerName}`);
+    if (customerName.trim() != "")
+      router.push({
+        pathname: `/invoices/edit`,
+        query: { id: customerName },
+      });
     else {
       setHasError(true);
       setTimeout(() => {
