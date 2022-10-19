@@ -1,4 +1,5 @@
 import Image from "next/image";
+import Link from "next/link";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
 
@@ -20,9 +21,11 @@ function Navbar() {
         alt="Logo"
       />
       {!isLandingPage && (
-        <h1 className="text-2xl font-extrabold text-blueMarguerite">
-          Invoice Generator
-        </h1>
+        <Link href="/">
+          <h1 className="text-2xl cursor-pointer font-extrabold text-blueMarguerite">
+            Invoice Generator
+          </h1>
+        </Link>
       )}
     </div>
   );
