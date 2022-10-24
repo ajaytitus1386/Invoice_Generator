@@ -1,4 +1,3 @@
-import { NextPage } from "next";
 import Head from "next/head";
 import { useRouter } from "next/router";
 import React, { useEffect, useState } from "react";
@@ -8,7 +7,7 @@ import ModeControlButton from "../../../components/Invoice/ModeControlButton";
 import InvoicePreview from "../../../components/Invoice/Preview/InvoicePreview";
 import { Invoice } from "../../../models/invoice";
 import { Product } from "../../../models/product";
-import { saveInvoiceToLocalStorage } from "../../../services/Hooks/saveInvoiceToLocalStorage";
+import { setInvoiceToCookie } from "../../../services/Hooks/setInvoiceToCookie";
 import getProducts from "../../../services/product/getProducts";
 
 function InvoiceGeneratorPage() {
@@ -97,7 +96,7 @@ function InvoiceGeneratorPage() {
           </button>
           <button
             onClick={() => {
-              saveInvoiceToLocalStorage(invoice);
+              setInvoiceToCookie(invoice);
               router.push("/");
             }}
             className="button-normal"
