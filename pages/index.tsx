@@ -10,7 +10,7 @@ const Home: NextPage = () => {
       <Head>
         <title>Invoice Generator</title>
       </Head>
-      <div className="absolute right-32 top-12">
+      <div className="absolute right-32 top-12 hidden lg:block">
         <Image
           src="/assets/invoice_image.png"
           width={420}

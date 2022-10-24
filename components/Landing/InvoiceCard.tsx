@@ -23,7 +23,15 @@ function InvoiceCard({ invoice }: { invoice: Invoice }) {
           </strong>
           <label>{formattedDate}</label>
         </div>
-        <div>
+
+        <div className="flex flex-row justify-center items-center ">
+          <a
+            href={`/api/pdf?id=${invoice.id}`}
+            download={`${invoice.id}_${invoice.transaction_name}.pdf`}
+            className="text-blueMarguerite active:text-clickPurple hover:bg-lavender rounded-3xl px-2"
+          >
+            <i className="material-icons">{"download"}</i>
+          </a>
           <button
             onClick={togglePreview}
             className="flex flex-row items-center px-4 py-2 text-blueMarguerite rounded-3xl hover:bg-lavender"
