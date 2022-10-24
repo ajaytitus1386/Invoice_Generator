@@ -1,5 +1,5 @@
 import { Invoice } from "../../models/invoice";
-import { getCookie } from "cookies-next";
+import { getCookie, hasCookie } from "cookies-next";
 
 export function getSavedInvoicesFromCookie({
   req,
@@ -8,5 +8,7 @@ export function getSavedInvoicesFromCookie({
   req?: any;
   res?: any;
 }): Invoice[] {
-  return JSON.parse(getCookie("savedInvoices", { req, res }) as string);
+  return hasCookie("savedInvoices")
+    ? JSON.parse(getCookie("savedInvoices", { req, res }) as string)
+    : [];
 }
