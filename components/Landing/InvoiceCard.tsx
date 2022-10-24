@@ -23,6 +23,12 @@ function InvoiceCard({ invoice }: { invoice: Invoice }) {
           </strong>
           <label>{formattedDate}</label>
         </div>
+        <a
+          href={`/api/pdf?id=${invoice.id}`}
+          download={`${invoice.id}_${invoice.transaction_name}.pdf`}
+        >
+          <i className="material-icons">{"download"}</i>
+        </a>
         <div>
           <button
             onClick={togglePreview}
