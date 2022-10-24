@@ -7,6 +7,7 @@ import { getSavedInvoicesFromCookie } from "../../../services/Hooks/getSavedInvo
 
 type QueryParams = {
   id: string;
+  invoiceJson: string;
 };
 
 interface Props {
@@ -15,29 +16,19 @@ interface Props {
 
 export const getServerSideProps: GetServerSideProps<Props> = async ({
   query,
-  req,
-  res,
 }) => {
-  const { id } = query as QueryParams;
+  const { id, invoiceJson } = query as QueryParams;
 
   try {
     if (!id) throw new Error("No invoice id passed!");
 
-    const invoices = getSavedInvoicesFromCookie({ req, res });
-
-    const foundInvoice = invoices.find(
-      (invoice) => invoice.id === id.split("%20").join(" ")
-    );
-
-    if (!foundInvoice)
-      throw new Error("Could not find an invoice saved with that ID");
-
     return {
       props: {
-        invoice: foundInvoice,
+        invoice: JSON.parse(invoiceJson),
       },
     };
   } catch (error) {
+    console.log(error);
     return {
       notFound: true,
     };

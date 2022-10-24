@@ -1,13 +1,12 @@
 import { NextApiHandler } from "next";
 
-import puppeteer from "puppeteer";
+import chromium from "chrome-aws-lambda";
+import playwright from "playwright-core";
 
 import { getCookie } from "cookies-next";
+import { Invoice } from "../../models/invoice";
 
 const Handler: NextApiHandler = async (req, res) => {
-  const browser = await puppeteer.launch();
-  const page = await browser.newPage();
-
   const { id } = req.query;
 
   const proto =
@@ -15,25 +14,48 @@ const Handler: NextApiHandler = async (req, res) => {
       ? "https"
       : "http";
 
-  await page.setCookie({
-    name: "savedInvoices",
-    value: getCookie("savedInvoices", { req, res }) as string,
-    url: `${proto}://${req.headers.host}`,
-  });
+  try {
+    const browser = await playwright.chromium.launch({
+      args: [...chromium.args, "--font-render-hinting=none"],
+    });
+    const context = await browser.newContext();
+    const page = await context.newPage();
 
-  await page.goto(`${proto}://${req.headers.host}/invoices/preview?id=${id}`, {
-    waitUntil: "networkidle0",
-  });
-  // await page.waitForSelector("html");
-  // await page.waitForNetworkIdle();
+    const invoices: Invoice[] = JSON.parse(
+      getCookie("savedInvoices", { req, res }) as string
+    );
+    const invoice = invoices.find(
+      (invoice) => invoice.id === id.toString().split("%20").join(" ")
+    );
 
-  await page.emulateMediaType("screen");
+    if (!invoice)
+      throw new Error("No invoice found in cookies that matches given ID ");
 
-  const pdfBuffer = await page.pdf({ format: "A4", printBackground: true });
+    await page.goto(
+      `${proto}://${
+        req.headers.host
+      }/invoices/preview?id=${id}&invoiceJson=${JSON.stringify(invoice)}`,
+      {
+        waitUntil: "networkidle",
+      }
+    );
 
-  res.send(pdfBuffer);
+    console.log("pdf: " + JSON.stringify(await context.cookies()));
 
-  await browser.close();
+    await page.emulateMedia({ media: "screen" });
+
+    const pdfBuffer = await page.pdf({
+      format: "A4",
+      printBackground: true,
+    });
+
+    res.send(pdfBuffer);
+
+    await context.close();
+    await browser.close();
+  } catch (error: any) {
+    return res.status(error.statusCode || 500).json({ error: error.message });
+  }
 };
 
 export default Handler;
