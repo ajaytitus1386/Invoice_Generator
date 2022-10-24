@@ -10,13 +10,18 @@ const Handler: NextApiHandler = async (req, res) => {
 
   const { id } = req.query;
 
+  const proto =
+    req.headers["x-forwarded-proto"] || req.socket.connecting
+      ? "https"
+      : "http";
+
   await page.setCookie({
     name: "savedInvoices",
     value: getCookie("savedInvoices", { req, res }) as string,
-    url: "http://localhost:3000",
+    url: `${proto}://${req.headers.host}`,
   });
 
-  await page.goto(`http://localhost:3000/invoices/preview?id=${id}`, {
+  await page.goto(`${proto}://${req.headers.host}/invoices/preview?id=${id}`, {
     waitUntil: "networkidle0",
   });
   // await page.waitForSelector("html");
